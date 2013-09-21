@@ -22,7 +22,7 @@ sbcl
 
 Load the main lisp files:
 
-(load "config.lisp")
+(load "config")
 (load "secp256k1")
 (load "hdw")
 
