@@ -1,0 +1,20 @@
+#!/bin/bash
+
+which openssl
+if [ $? != 0 ]; then
+  echo "Cannot find openssl; quitting";
+  exit 1
+fi
+which sha256sum
+if [ $? != 0 ]; then
+  echo "Cannot find sha256sum; quitting";
+  exit 1
+fi
+which sha512sum
+if [ $? != 0 ]; then
+  echo "Cannot find sha512sum; quitting";
+  exit 1
+fi
+echo '(defvar *openssl* "'`which openssl`'")' > config.lisp
+echo '(defvar *sha256sum* "'`which sha256sum`'")' >> config.lisp
+echo '(defvar *sha512sum* "'`which sha512sum`'")' >> config.lisp
