@@ -259,38 +259,35 @@
 
 ; Computation of Wallet Import Formats for Private Keys
 
-; btc private key in wallet import format, btc prefix is #x80.
+; generic wif from private key with prefix depending on the coin
 ; k : private key, int
-; return string, base58 btc wif
-(defun btcwif (k)
-  (let* ((k1 (logior (ash #x80 256) k))
+; pre : prefix byte, int
+; return string, base58
+(defun genwif (k pre)
+  (let* ((k1 (logior (ash pre 256) k))
 	 (sh1 (sha256num k1 33))
 	 (sh2 (sha256num sh1 32))
 	 (sh24 (ash sh2 -224))
 	 (c (logior (ash k1 32) sh24)))
     (base58 c)))
+
+; btc private key in wallet import format, btc prefix is #x80.
+; k : private key, int
+; return string, base58 btc wif
+(defun btcwif (k)
+  (genwif k #x80))
 
 ; ltc private key in wallet import format, ltc prefix is #xb0, otherwise the process is the same as btcwif
 ; k : private key, int
 ; return string, base58 ltc wif
 (defun ltcwif (k)
-  (let* ((k1 (logior (ash #xB0 256) k))
-	 (sh1 (sha256num k1 33))
-	 (sh2 (sha256num sh1 32))
-	 (sh24 (ash sh2 -224))
-	 (c (logior (ash k1 32) sh24)))
-    (base58 c)))
+  (genwif k #xb0))
 
 ; ftc private key in wallet import format, ftc prefix is #x8e, otherwise the process is the same as btcwif
 ; k : private key, int
 ; return string, base58 ftc wif
 (defun ftcwif (k)
-  (let* ((k1 (logior (ash #x8E 256) k))
-	 (sh1 (sha256num k1 33))
-	 (sh2 (sha256num sh1 32))
-	 (sh24 (ash sh2 -224))
-	 (c (logior (ash k1 32) sh24)))
-    (base58 c)))
+  (genwif k #x8e))
 
 ; w : wif (of btc, ltc, ftc), base58 string
 ; return private key, int
