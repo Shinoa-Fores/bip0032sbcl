@@ -2,6 +2,9 @@
 
 ; unit tests for hierarchical deterministic wallets (bip0032)
 
+; defvar all global variables I use in this file to prevent lisp from giving warnings.
+(defvar x nil)(defvar y nil)(defvar masterseed nil)(defvar priv nil)(defvar c nil)(defvar pub nil)(defvar priv0p nil)(defvar c0p nil)(defvar priv0p1 nil)(defvar c0p1 nil)(defvar xpub0p1 nil)(defvar ypub0p1 nil)(defvar cu0p1 nil)(defvar xxpub0p1 nil)(defvar yypub0p1 nil)(defvar c0p12p nil)(defvar priv0p12p nil)(defvar c0p12p2 nil)(defvar priv0p12p2 nil)(defvar cu0p12p2 nil)(defvar xpub0p12p2 nil)(defvar ypub0p12p2 nil)(defvar xxpub0p12p2 nil)(defvar yypub0p12p2 nil)(defvar c0p12p2big nil)(defvar priv0p12p2big nil)(defvar xpub0p12p2big nil)(defvar ypub0p12p2big nil)(defvar cu0p12p2big nil)(defvar xxpub0p12p2big nil)(defvar yypub0p12p2big nil)(defvar masterhex nil)(defvar priv0 nil)(defvar c02bp1 nil)(defvar priv02bp1 nil)(defvar c02bp12bp nil)(defvar priv02bp12bp nil)(defvar xpub0 nil)(defvar ypub0 nil)(defvar xxpub0 nil)(defvar yypub0 nil)(defvar cu0 nil)(defvar c0 nil)(defvar priv02bp nil)(defvar c02bp nil)(defvar xpub02bp1 nil)(defvar ypub02bp1 nil)(defvar cu02bp1 nil)(defvar xxpub02bp1 nil)(defvar yypub02bp1 nil)(defvar priv02bp12bp2 nil)(defvar c02bp12bp nil)(defvar c02bp12bp2 nil)(defvar xpub02bp12bp2 nil)(defvar ypub02bp12bp2 nil)(defvar cu02bp12bp2 nil)(defvar xxpub02bp12bp2 nil)(defvar yypub02bp12bp2 nil)
+
 ; Test Vector 1
 (setq masterseed (make-string 16))
 (dotimes (i 16) (setf (aref masterseed i) (code-char i)))
