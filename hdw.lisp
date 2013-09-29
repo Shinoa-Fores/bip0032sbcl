@@ -18,7 +18,7 @@
    (smulp k xg yg)
    (if (and x y)
        (compr x y)
-     (break))))
+     (error "Bad private key"))))
 
 ; Hash functions (relying on openssl, sha256sum and sha512sum to do the work)
 ; Set the values of *openssl*, *sha256sum* and *sha512sum* in config.lisp
@@ -120,7 +120,7 @@
 ; or return nil if invalid
 (defun ckdp (xKpar yKpar cpar i)
   (if (oddp (ash i -31)) ; most significant bit is set, error since should be computing public derivation
-      (break)
+      (error "ckdp cannot perform private child derivation")
     (let* ((bi
 	    (hmac-sha512 cpar (logior (ash (compr xKpar yKpar) 32) i)))
 	   (bil (ash bi -256))
@@ -193,7 +193,7 @@
 ; extended public key x,y,c.
 (defun external-chain-pubkeys (x y c i kstart klen)
   (if (oddp (ash i -31)) ; most significant bit is set, error since such accounts require the extended private key
-      (break)
+      (error "ckdp cannot perform private child derivation")
     (multiple-value-bind
      (xi yi ci)
      (ckdp x y c i)
@@ -218,7 +218,7 @@
 ; extended public key x,y,c.
 (defun internal-chain-pubkeys (x y c i kstart klen)
   (if (oddp (ash i -31)) ; most significant bit is set, error since such accounts require the extended private key
-      (break)
+      (error "ckdp cannot perform private child derivation")
     (multiple-value-bind
      (xi yi ci)
      (ckdp x y c i)
@@ -255,7 +255,7 @@
       (let ((p (position (aref s i) *base58chars*)))
 	(if p
 	    (setq r (+ (* r 58) p))
-	  (break))))))
+	  (error "string is not a base58 number"))))))
 
 ; Computation of Wallet Import Formats for Private Keys
 
