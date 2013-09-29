@@ -25,7 +25,7 @@ The created executable is bip0032sbclexec.
 
 Example:
 
-1. Create the root extended private key from some long random master
+Step 1. Create the root extended private key from some long random master
 hex file (not the one used here, obviously).  This gives the extended
 private key as the private key and the chain code, both in base58.
 
@@ -41,7 +41,7 @@ Alternatively, use a string which is interpreted as a sequence of bytes in ASCII
 DuuexuuW9DHFXLAsrrfwsciwWbou7fNGLrQhpQfNDNCj
 3v3RcRzG8oiaS8AyCP65mNhtsaBgDe7bAdk2CkvvxtCJ
 
-2. Used the private key from Step 1 to compute the corresponding
+Step 2. Used the private key from Step 1 to compute the corresponding
 public key given as two base58 numbers x and y representing the point
 (x,y).
 
@@ -50,7 +50,7 @@ public key given as two base58 numbers x and y representing the point
 9egqHyQ2U4FRJhD1TYv1T36cSZgi71ttEzLKJwRGiw7c
 FjVLq81iEotBdEQxYgBZ9FCNGRTwYkwVKKnhAREf3YeR
 
-3. Use the extended private key of the root (from Step 1) to compute
+Step 3. Use the extended private key of the root (from Step 1) to compute
 the extended private key of the child with index 7 from the root.
 
 ./bip0032sbclexec ckd DuuexuuW9DHFXLAsrrfwsciwWbou7fNGLrQhpQfNDNCj 3v3RcRzG8oiaS8AyCP65mNhtsaBgDe7bAdk2CkvvxtCJ 7
@@ -58,7 +58,7 @@ the extended private key of the child with index 7 from the root.
 aFvVvUn6Pm3ffpKaCXZZMMt8eW2hfqkR6ug8PMqzGdt
 FzFEfp5ERtGuDTHkHGNoN6rjTmRUchWfeMgbckAtoNJi
 
-4. Compute the corresponding public key of the private key computed in
+Step 4. Compute the corresponding public key of the private key computed in
 Step 3.
 
 ./bip0032sbclexec pubkey aFvVvUn6Pm3ffpKaCXZZMMt8eW2hfqkR6ug8PMqzGdt
@@ -66,7 +66,7 @@ Step 3.
 CebQefqW9HGKfcVit1zP2VFzFF1o2V6EHh87CrRD91aE
 4B1WboXeevEDCem7GcEyuRer9moByPZcF3mKdQazsXZw
 
-5. Use the extended public key of the root (from Steps 1 and 2) to compute
+Step 5. Use the extended public key of the root (from Steps 1 and 2) to compute
 the extended public key of the child with index 7 from the root.  Note
 that the public key part matches the public key computed in Step 4,
 and the chain code corresponds to the chain code computed in Step 3.
@@ -77,7 +77,7 @@ CebQefqW9HGKfcVit1zP2VFzFF1o2V6EHh87CrRD91aE
 4B1WboXeevEDCem7GcEyuRer9moByPZcF3mKdQazsXZw
 FzFEfp5ERtGuDTHkHGNoN6rjTmRUchWfeMgbckAtoNJi
 
-6. Use the extended public key from Step 5 to generate 3 btc addresses
+Step 6. Use the extended public key from Step 5 to generate 3 btc addresses
 (starting at index 5).  The three addresses are returned on three
 lines and the final line gives the next unused index.  Usually this
 will be the starting index plus the number of addresses generated, but
@@ -90,7 +90,7 @@ sometimes an index is invalid and must be skipped.
 1QBTyb15HZskDsucGK9u69mDeNc7bytGxL
 8
 
-7. Use the extended private key from Step 3 to generate 3 btc
+Step 7. Use the extended private key from Step 3 to generate 3 btc
 wif/address pairs (starting at index 5). The three wif/address pairs
 are given over 6 lines (wif, then address).  The final line is the
 next unused index. Note that the addresses correspond to those
@@ -106,7 +106,7 @@ generated in Step 6.
 1QBTyb15HZskDsucGK9u69mDeNc7bytGxL
 8
 
-8. Repeat the same process to obtain ltc and ftc addresses and wif/address pairs.
+Step 8. Repeat the same process to obtain ltc and ftc addresses and wif/address pairs.
 
 ./bip0032sbclexec ltcaddrs CebQefqW9HGKfcVit1zP2VFzFF1o2V6EHh87CrRD91aE 4B1WboXeevEDCem7GcEyuRer9moByPZcF3mKdQazsXZw FzFEfp5ERtGuDTHkHGNoN6rjTmRUchWfeMgbckAtoNJi 5 3
 
