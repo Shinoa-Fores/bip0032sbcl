@@ -27,11 +27,16 @@
 (defun ripemd160num (n nlen)
   (let ((nbytes nil))
     (dotimes (i nlen) (push (mod n 256) nbytes) (setq n (ash n -8)))
-    (let ((p (sb-ext:run-program *openssl* '("dgst" "-ripemd160") :input :stream :output :stream :wait nil)))
+    (let ((p (sb-ext:run-program *openssl* '("dgst" "-ripemd160") :input :stream :output :stream :error nil :wait nil)))
       (dolist (b nbytes) (write-byte b (sb-ext:process-input p)))
       (close (sb-ext:process-input p))
       (sb-ext:process-wait p t)
-      (prog1 (read-from-string (format nil "#x~d" (read-line (sb-ext:process-output p)))) (close (sb-ext:process-output p))))))
+      (let ((l (read-line (sb-ext:process-output p))))
+	(if (>= (length l) 40)
+	    (let ((v (read-from-string (format nil "#x~d" (subseq l (- (length l) 40))))))
+	      (close (sb-ext:process-output p))
+	      v)
+	  (error "bad output from openssl"))))))
 
 ; n is a number with nlen bytes. Return the 256 bit number given by sha256
 (defun sha256num (n nlen)
