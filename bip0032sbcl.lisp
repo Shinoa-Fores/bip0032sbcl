@@ -112,7 +112,7 @@
 			 (j (read-from-string (nth 4 sb-ext:*posix-argv*))))
 		     (multiple-value-bind
 		      (privj cj)
-		      (ckd priv c (logior (ash 1 32) j))
+		      (ckd priv c (logior (ash 1 31) j))
 		      (if (and privj cj)
 			  (format t "~d~%~d~%" (base58 privj) (base58 cj))
 			(format *error-output* "INVALID~%"))
