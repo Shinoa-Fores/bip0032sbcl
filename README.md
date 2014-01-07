@@ -21,11 +21,70 @@ The created executable is bip0032sbclexec.
 
 ./bip0032sbclexec help
 
+There are some examples and unit tests below.
+The file MetaBlockchain explains how one can create
+a blockchain of arbitrary data, administered by
+someone with an extended private key, time stamped
+into the Bitcoin Blockchain.
+
 =====================================
 
-Example:
+Quick start:
 
-Step 1. Create the root extended private key from some long random master
+1. Use 'master' with a seed to get an extended private key.
+Since this is just an example, I will use a terrible phrase for the seed.
+Make sure you don't use a terrible phrase for the seed.
+
+./bip0032sbclexec master "Is it true?"
+
+DuuexuuW9DHFXLAsrrfwsciwWbou7fNGLrQhpQfNDNCj  (the root private key)
+3v3RcRzG8oiaS8AyCP65mNhtsaBgDe7bAdk2CkvvxtCJ  (the root chain code)
+
+2. Use 'pubkey' to get the corresponding root public key:
+
+./bip0032sbclexec pubkey DuuexuuW9DHFXLAsrrfwsciwWbou7fNGLrQhpQfNDNCj
+
+9egqHyQ2U4FRJhD1TYv1T36cSZgi71ttEzLKJwRGiw7c  (x coordinate of public key in base 58)
+FjVLq81iEotBdEQxYgBZ9FCNGRTwYkwVKKnhAREf3YeR  (y coordinate of public key in base 58)
+
+Extended public key: this x, this y, the chain code above.
+
+Note: We can specify nodes in the directory structure using paths like "9/2/5" or "72'/4"
+where the ' indicates a private child derivation.
+A path with a private child is only accessible using an extended private key.
+
+3. Use the extended public key to get 3 btc addresses starting with index 105 at path "9/2/5":
+
+./bip0032sbclexec btcaddrs 9egqHyQ2U4FRJhD1TYv1T36cSZgi71ttEzLKJwRGiw7c FjVLq81iEotBdEQxYgBZ9FCNGRTwYkwVKKnhAREf3YeR 3v3RcRzG8oiaS8AyCP65mNhtsaBgDe7bAdk2CkvvxtCJ "9/2/5" 105 3
+
+1DQasDQBGPN1YERYoD4EcAxYbUfbCJTwj1
+16U7Sf2Eh1oudposKqgMGx3ZWzeayZ93c3
+1FgiXAqy7UjxJC24LHxYGsSrP2CQ1C1sh5
+
+4. Use the extended private key to get the private keys for these btc addresses:
+
+./bip0032sbclexec btcpairs DuuexuuW9DHFXLAsrrfwsciwWbou7fNGLrQhpQfNDNCj 3v3RcRzG8oiaS8AyCP65mNhtsaBgDe7bAdk2CkvvxtCJ "9/2/5" 105 3
+
+5JaRvqhAfJXVdg6twZ7AD9xg53Ff2MtSBkBtfnig839y17PtYAM
+1DQasDQBGPN1YERYoD4EcAxYbUfbCJTwj1
+5KUB8G7EwLuZciPEspKz7VfFkfJLpBqqREsHicbJ5i1qAVHGmQR
+16U7Sf2Eh1oudposKqgMGx3ZWzeayZ93c3
+5JmSHubq7PzavcX6CCxKdULoXBaqoxwUyNxiVdHQiVctHDyJFsy
+1FgiXAqy7UjxJC24LHxYGsSrP2CQ1C1sh5
+
+5. Use the extended private key to get 1 private key and address at index 0 at the path "72'/4"
+
+./bip0032sbclexec btcpairs DuuexuuW9DHFXLAsrrfwsciwWbou7fNGLrQhpQfNDNCj 3v3RcRzG8oiaS8AyCP65mNhtsaBgDe7bAdk2CkvvxtCJ "72'/4" 0 1
+
+6. Try to use the extended public key to get the address at index 0 at the path "72'/4". It will fail because 72' is a private child.
+
+./bip0032sbclexec btcaddrs 9egqHyQ2U4FRJhD1TYv1T36cSZgi71ttEzLKJwRGiw7c FjVLq81iEotBdEQxYgBZ9FCNGRTwYkwVKKnhAREf3YeR 3v3RcRzG8oiaS8AyCP65mNhtsaBgDe7bAdk2CkvvxtCJ "72'/4" 0 1
+
+=====================================
+
+An example demonstrating the fine-grained commands 'ckd', 'ckdp' and 'ckdpub'.
+
+1. Create the root extended private key from some long random master
 hex file (not the one used here, obviously).  This gives the extended
 private key as the private key and the chain code, both in base58.
 
@@ -41,7 +100,7 @@ Alternatively, use a string which is interpreted as a sequence of bytes in ASCII
 DuuexuuW9DHFXLAsrrfwsciwWbou7fNGLrQhpQfNDNCj
 3v3RcRzG8oiaS8AyCP65mNhtsaBgDe7bAdk2CkvvxtCJ
 
-Step 2. Used the private key from Step 1 to compute the corresponding
+2. Used the private key from Step 1 to compute the corresponding
 public key given as two base58 numbers x and y representing the point
 (x,y).
 
@@ -50,7 +109,7 @@ public key given as two base58 numbers x and y representing the point
 9egqHyQ2U4FRJhD1TYv1T36cSZgi71ttEzLKJwRGiw7c
 FjVLq81iEotBdEQxYgBZ9FCNGRTwYkwVKKnhAREf3YeR
 
-Step 3. Use the extended private key of the root (from Step 1) to compute
+3. Use the extended private key of the root (from Step 1) to compute
 the extended private key of the child with index 7 from the root.
 
 ./bip0032sbclexec ckd DuuexuuW9DHFXLAsrrfwsciwWbou7fNGLrQhpQfNDNCj 3v3RcRzG8oiaS8AyCP65mNhtsaBgDe7bAdk2CkvvxtCJ 7
@@ -58,7 +117,7 @@ the extended private key of the child with index 7 from the root.
 aFvVvUn6Pm3ffpKaCXZZMMt8eW2hfqkR6ug8PMqzGdt
 FzFEfp5ERtGuDTHkHGNoN6rjTmRUchWfeMgbckAtoNJi
 
-Step 4. Compute the corresponding public key of the private key computed in
+4. Compute the corresponding public key of the private key computed in
 Step 3.
 
 ./bip0032sbclexec pubkey aFvVvUn6Pm3ffpKaCXZZMMt8eW2hfqkR6ug8PMqzGdt
@@ -66,7 +125,7 @@ Step 3.
 CebQefqW9HGKfcVit1zP2VFzFF1o2V6EHh87CrRD91aE
 4B1WboXeevEDCem7GcEyuRer9moByPZcF3mKdQazsXZw
 
-Step 5. Use the extended public key of the root (from Steps 1 and 2) to compute
+5. Use the extended public key of the root (from Steps 1 and 2) to compute
 the extended public key of the child with index 7 from the root.  Note
 that the public key part matches the public key computed in Step 4,
 and the chain code corresponds to the chain code computed in Step 3.
@@ -77,26 +136,27 @@ CebQefqW9HGKfcVit1zP2VFzFF1o2V6EHh87CrRD91aE
 4B1WboXeevEDCem7GcEyuRer9moByPZcF3mKdQazsXZw
 FzFEfp5ERtGuDTHkHGNoN6rjTmRUchWfeMgbckAtoNJi
 
-Step 6. Use the extended public key from Step 5 to generate 3 btc addresses
-(starting at index 5).  The three addresses are returned on three
-lines and the final line gives the next unused index.  Usually this
-will be the starting index plus the number of addresses generated, but
-sometimes an index is invalid and must be skipped.
+6. Use the extended public key from Step 5 to generate 3 btc addresses
+(starting at index 5).  We could give a path, but let us use "/" for
+the empty path.  The three addresses are returned on three lines and
+the final line gives the next unused index.  Usually this will be the
+starting index plus the number of addresses generated, but sometimes
+an index is invalid and must be skipped.
 
-./bip0032sbclexec btcaddrs CebQefqW9HGKfcVit1zP2VFzFF1o2V6EHh87CrRD91aE 4B1WboXeevEDCem7GcEyuRer9moByPZcF3mKdQazsXZw FzFEfp5ERtGuDTHkHGNoN6rjTmRUchWfeMgbckAtoNJi 5 3
+./bip0032sbclexec btcaddrs CebQefqW9HGKfcVit1zP2VFzFF1o2V6EHh87CrRD91aE 4B1WboXeevEDCem7GcEyuRer9moByPZcF3mKdQazsXZw FzFEfp5ERtGuDTHkHGNoN6rjTmRUchWfeMgbckAtoNJi "/" 5 3
 
 1ELX99uVdVMoqDfqLS3px8mjD8DaVutjT1
 1MvtMkHJCfDWi2kpSt7spHGpLibPuEkDaF
 1QBTyb15HZskDsucGK9u69mDeNc7bytGxL
 8
 
-Step 7. Use the extended private key from Step 3 to generate 3 btc
+7. Use the extended private key from Step 3 to generate 3 btc
 wif/address pairs (starting at index 5). The three wif/address pairs
 are given over 6 lines (wif, then address).  The final line is the
 next unused index. Note that the addresses correspond to those
 generated in Step 6.
 
-./bip0032sbclexec btcpairs aFvVvUn6Pm3ffpKaCXZZMMt8eW2hfqkR6ug8PMqzGdt FzFEfp5ERtGuDTHkHGNoN6rjTmRUchWfeMgbckAtoNJi 5 3
+./bip0032sbclexec btcpairs aFvVvUn6Pm3ffpKaCXZZMMt8eW2hfqkR6ug8PMqzGdt FzFEfp5ERtGuDTHkHGNoN6rjTmRUchWfeMgbckAtoNJi "/" 5 3
 
 5HrWRC7qL56h6ysGmxyyarqGN9td118DvamTMEAgRLrdxYnjFyQ
 1ELX99uVdVMoqDfqLS3px8mjD8DaVutjT1
@@ -106,23 +166,23 @@ generated in Step 6.
 1QBTyb15HZskDsucGK9u69mDeNc7bytGxL
 8
 
-Step 8. Repeat the same process to obtain ltc and ftc addresses and wif/address pairs.
+8. Repeat the same process to obtain ltc and ftc addresses and wif/address pairs.
 
-./bip0032sbclexec ltcaddrs CebQefqW9HGKfcVit1zP2VFzFF1o2V6EHh87CrRD91aE 4B1WboXeevEDCem7GcEyuRer9moByPZcF3mKdQazsXZw FzFEfp5ERtGuDTHkHGNoN6rjTmRUchWfeMgbckAtoNJi 5 3
+./bip0032sbclexec ltcaddrs CebQefqW9HGKfcVit1zP2VFzFF1o2V6EHh87CrRD91aE 4B1WboXeevEDCem7GcEyuRer9moByPZcF3mKdQazsXZw FzFEfp5ERtGuDTHkHGNoN6rjTmRUchWfeMgbckAtoNJi "/" 5 3
 
 LYZUQNDKi9bs62MzWa38E9qVRLarfARfDW
 Lg9qcxb8HKTZxqSyd27B6JLaYvxg64NHQc
 LiQREoJuNE7oUgbmST9CNApyrayPjTTAx9
 8
 
-./bip0032sbclexec ftcaddrs CebQefqW9HGKfcVit1zP2VFzFF1o2V6EHh87CrRD91aE 4B1WboXeevEDCem7GcEyuRer9moByPZcF3mKdQazsXZw FzFEfp5ERtGuDTHkHGNoN6rjTmRUchWfeMgbckAtoNJi 5 3
+./bip0032sbclexec ftcaddrs CebQefqW9HGKfcVit1zP2VFzFF1o2V6EHh87CrRD91aE 4B1WboXeevEDCem7GcEyuRer9moByPZcF3mKdQazsXZw FzFEfp5ERtGuDTHkHGNoN6rjTmRUchWfeMgbckAtoNJi "/" 5 3
 
 6s4xvg5Xa1r5HHd3gJiHjtak2BpnUFfvcE
 6zfL9GTL9BhnA6i2nknLc35q9nCbxP4cCF
 72uum7B7E6N1fwrpcBpMsuaETSDKYEfpWo
 8
 
-./bip0032sbclexec ltcpairs aFvVvUn6Pm3ffpKaCXZZMMt8eW2hfqkR6ug8PMqzGdt FzFEfp5ERtGuDTHkHGNoN6rjTmRUchWfeMgbckAtoNJi 5 3
+./bip0032sbclexec ltcpairs aFvVvUn6Pm3ffpKaCXZZMMt8eW2hfqkR6ug8PMqzGdt FzFEfp5ERtGuDTHkHGNoN6rjTmRUchWfeMgbckAtoNJi "/" 5 3
 
 6uAEtKfNEVZZaMm8HnmwNFcSKdT6CoaFhGAd4RBi8oBFeQZkSNF
 LYZUQNDKi9bs62MzWa38E9qVRLarfARfDW
@@ -132,7 +192,7 @@ Lg9qcxb8HKTZxqSyd27B6JLaYvxg64NHQc
 LiQREoJuNE7oUgbmST9CNApyrayPjTTAx9
 8
 
-./bip0032sbclexec ftcpairs aFvVvUn6Pm3ffpKaCXZZMMt8eW2hfqkR6ug8PMqzGdt FzFEfp5ERtGuDTHkHGNoN6rjTmRUchWfeMgbckAtoNJi 5 3
+./bip0032sbclexec ftcpairs aFvVvUn6Pm3ffpKaCXZZMMt8eW2hfqkR6ug8PMqzGdt FzFEfp5ERtGuDTHkHGNoN6rjTmRUchWfeMgbckAtoNJi "/" 5 3
 
 5m4vtSQHG2ZrzU19U5fxwME7BkWg6rvUwXkxmKoELWx4sFizwkJ
 6s4xvg5Xa1r5HHd3gJiHjtak2BpnUFfvcE
@@ -159,7 +219,7 @@ secp256k1.lisp contains code for the Elliptic Curve secp256k1.
 https://en.bitcoin.it/wiki/Secp256k1
 
 hdw.lisp contains code for BIP0032 (HD Wallets).
-https://en.bitcoin.it/wiki/BIP_0032
+https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
 
 unittests.lisp contains test code. It is mostly from here:
 https://en.bitcoin.it/wiki/BIP_0032_TestVectors
