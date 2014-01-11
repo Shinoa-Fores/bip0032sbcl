@@ -1,0 +1,36 @@
+04B078B40CEAE16B7A4A66B540B0E68CD636DD26AF8586564F2D8CD7822225CD3C3F7927678B96043DC1806C2E11BC87929F5DE6023B879E0A17C0331A0AAEA263
+4b5066707134d715f7b9d2efe3d9f7e0d320689787611ed7cbe1d5cbf98c5768
+
+A PGP signed message using the key published in the previous metablock.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+This is a message from Krona Rev signed using PGP.
+It's being published into the Test Meta-Blockchain
+in January 2014.
+
+Krona Rev can be contacted on bitcointalk.org, but
+please PGP encrypt your message using the public key
+in the previous metablock. It is the same key used to
+sign this message. In a post-Snowden world, unencrypted
+messages should not be considered private. Krona Rev
+may make unencrypted messages public. If you want
+Krona Rev to respond, please include your PGP public
+key with your message.
+-----BEGIN PGP SIGNATURE-----
+
+iQIcBAEBCgAGBQJSzXZyAAoJEBIPx43R19fHa2EP+wVdDUgvKzmDeBGonPnhhGMB
+bQFDBUAptwWO6qYedmkMjZK4XkSBmJDIWq+YEKdKtMMZ8HI2EzSthmIF7DBTiiTh
+624Pmw2h0hqhUZFinlH6hv2pfKN5GXj5N0TGB7jHfXnM7WaLMHMQDs5lB1zz2s+S
+X/+A0qav9n3l5daF0MH3K/rjvrgYOKCnP25OuSu1nzm2q3ss42wvgu27GnBbVMxH
+d729H2xIZpFR4gLFUcJgYPaAmF74VbxI0jxJzcSZwyneK55Dj4iqLKpi7mm8/VP4
+BpFhHj2WTiAJmeVR3+aRxDHsJbTn3JpJSnU+IXW5VCfhY4VzOcAo0Ga6x6gBOgbJ
+U+OuNbGwP/MeNAtpDjqOp3A0vIdCF1x9oYt7YHbKuIVwWbVkMVzv98W2C9Jc4TFT
+yXcdcXWME4ny9OE4xM6BJHe3Mn0kOJVFLOtvhqCso1dOWmaAU582fwoA7WbvbwFM
+45z65ACuc3EnZ3XPMswILP0J+SelJZ2WFiQAVUCBjjLLmkjJBy7mqejDqTTPvPEx
+xbb848QkvlzrcCUKXh/cGePoXSC7l6mG1stHWtzFMdouSqqWhYMdcTOmkzlAkxYN
+ezNCa7aNe7bzqOfcaZ7gBe0q0htaLcCG1/GZb6TFFrriNr1Q9CBlFV1m3B+pWc1X
+bMwXfVNeHxzGOaxsr92u
+=AJaw
+-----END PGP SIGNATURE-----
