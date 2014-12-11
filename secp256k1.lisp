@@ -19,16 +19,11 @@
 ; x^n mod p
 (defun pow (x n) (if (= n 0) 1 (let ((z (pow (mul x x) (ash n -1)))) (if (evenp n) z (mul z x)))))
 
-; Quotient function used for the Extended Euclidean Algorithm
-; a,b : int
-; return quotient and remainder
-(defun quo (a b) (let ((r (mod a b))) (values (/ (- a r) b) r)))
-
 ; Extended Euclidean Algorithm
 (defun eea (a b)
   (let ((x 0) (lastx 1) (y 1) (lasty 0) (q nil) (r nil))
     (loop while (> b 0) do
-      (multiple-value-setq (q r) (quo a b))
+      (multiple-value-setq (q r) (floor a b))
       (setq a b b r)
       (let ((lx x) (ly y))
 	(setq x (sub lastx (mul q x)) lastx lx)
