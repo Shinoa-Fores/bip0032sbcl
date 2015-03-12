@@ -27,14 +27,14 @@
 (defun ripemd160num (n nlen)
   (let ((nbytes nil))
     (dotimes (i nlen) (push (mod n 256) nbytes) (setq n (ash n -8)))
-    (let ((p (sb-ext:run-program *openssl* '("dgst" "-ripemd160") :input :stream :output :stream :error nil :wait nil)))
-      (dolist (b nbytes) (write-byte b (sb-ext:process-input p)))
-      (close (sb-ext:process-input p))
-      (sb-ext:process-wait p t)
-      (let ((l (read-line (sb-ext:process-output p))))
+    (let ((pr (sb-ext:run-program *openssl* '("dgst" "-ripemd160") :input :stream :output :stream :error nil :wait nil)))
+      (dolist (b nbytes) (write-byte b (sb-ext:process-input pr)))
+      (close (sb-ext:process-input pr))
+      (sb-ext:process-wait pr t)
+      (let ((l (read-line (sb-ext:process-output pr))))
 	(if (>= (length l) 40)
 	    (let ((v (read-from-string (format nil "#x~d" (subseq l (- (length l) 40))))))
-	      (close (sb-ext:process-output p))
+	      (close (sb-ext:process-output pr))
 	      v)
 	  (error "bad output from openssl"))))))
 
@@ -42,21 +42,21 @@
 (defun sha256num (n nlen)
   (let ((nbytes nil))
     (dotimes (i nlen) (push (mod n 256) nbytes) (setq n (ash n -8)))
-    (let ((p (sb-ext:run-program *sha256sum* '("-b") :input :stream :output :stream :wait nil)))
-      (dolist (b nbytes) (write-byte b (sb-ext:process-input p)))
-      (close (sb-ext:process-input p))
-      (sb-ext:process-wait p t)
-      (prog1 (read-from-string (format nil "#x~d" (read-line (sb-ext:process-output p)))) (close (sb-ext:process-output p))))))
+    (let ((pr (sb-ext:run-program *sha256sum* '("-b") :input :stream :output :stream :wait nil)))
+      (dolist (b nbytes) (write-byte b (sb-ext:process-input pr)))
+      (close (sb-ext:process-input pr))
+      (sb-ext:process-wait pr t)
+      (prog1 (read-from-string (format nil "#x~d" (read-line (sb-ext:process-output pr)))) (close (sb-ext:process-output pr))))))
 
 ; n is a number with nlen bytes. Return the 512 bit number given by sha512
 (defun sha512num (n nlen)
   (let ((nbytes nil))
     (dotimes (i nlen) (push (mod n 256) nbytes) (setq n (ash n -8)))
-    (let ((p (sb-ext:run-program *sha512sum* '("-b") :input :stream :output :stream :wait nil)))
-      (dolist (b nbytes) (write-byte b (sb-ext:process-input p)))
-      (close (sb-ext:process-input p))
-      (sb-ext:process-wait p t)
-      (prog1 (read-from-string (format nil "#x~d" (read-line (sb-ext:process-output p)))) (close (sb-ext:process-output p))))))
+    (let ((pr (sb-ext:run-program *sha512sum* '("-b") :input :stream :output :stream :wait nil)))
+      (dolist (b nbytes) (write-byte b (sb-ext:process-input pr)))
+      (close (sb-ext:process-input pr))
+      (sb-ext:process-wait pr t)
+      (prog1 (read-from-string (format nil "#x~d" (read-line (sb-ext:process-output pr)))) (close (sb-ext:process-output pr))))))
 
 ; HMAC-SHA512
 
@@ -109,8 +109,8 @@
 	    (hmac-sha512 cpar (logior (ash (comprpubkey kpar) 32) i))))
 	 (bil (ash bi -256))
 	 (bir (logand bi #xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF)))
-    (let ((ki (mod (+ bil kpar) n)))
-      (if (and (> ki 0) (< bil n))
+    (let ((ki (mod (+ bil kpar) ng)))
+      (if (and (> ki 0) (< bil ng))
 	  (values ki bir)
 	nil))))
 
@@ -136,7 +136,7 @@
        (multiple-value-bind
 	(xKi yKi)
 	(addp x y xKpar yKpar)
-	(if (and xKi yKi (< bil n))
+	(if (and xKi yKi (< bil ng))
 	    (values xKi yKi bir)
 	  nil))))))
 
@@ -257,9 +257,9 @@
 (defun frombase58 (s)
   (let ((r 0))
     (dotimes (i (length s) r)
-      (let ((p (position (aref s i) *base58chars*)))
-	(if p
-	    (setq r (+ (* r 58) p))
+      (let ((pos (position (aref s i) *base58chars*)))
+	(if pos
+	    (setq r (+ (* r 58) pos))
 	  (error "string is not a base58 number"))))))
 
 ; Computation of Wallet Import Formats for Private Keys
