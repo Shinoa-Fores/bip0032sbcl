@@ -43,7 +43,7 @@
   (define-operations + add - sub * mul #|expt pow lolno|#))
 
 ;;; modular exponentiation (by squaring)
-(defun pow (x n &optional (x^n 1)) ; (declare (notinline pow))
+(defun pow (x n &optional (x^n 1))
   (do ((x x (mul x x)) (n n (ash n -1))) ((zerop n) x^n)
     (when (oddp n) (setf x^n (mul x^n x)))))
 
