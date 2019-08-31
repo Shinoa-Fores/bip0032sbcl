@@ -288,13 +288,13 @@
 (defun ltcwif (k)
   (genwif k #xb0))
 
-; ftc private key in wallet import format, ftc prefix is #x8e, otherwise the process is the same as btcwif
+; uno private key in wallet import format, uno prefix is #xe0, otherwise the process is the same as btcwif
 ; k : private key, int
-; return string, base58 ftc wif
-(defun ftcwif (k)
-  (genwif k #x8e))
+; return string, base58 uno wif
+(defun unowif (k)
+  (genwif k #xe0))
 
-; w : wif (of btc, ltc, ftc), base58 string
+; w : wif (of btc, ltc, uno), base58 string
 ; return private key, int
 ; Note: This doesn't check that the input was a valid wif string.
 (defun privkeyfromwif (w)
@@ -323,7 +323,7 @@
 	 (a (logior (ash rm1 32) sh34)))
     (format nil "~d~d" (make-string c0 :initial-element #\1) (base58 a))))
 
-; generic address computation which works for ltc and ftc
+; generic address computation which works for ltc
 ; (x,y) : public key (as point on the elliptic curve)
 ; pre : prefix byte
 (defun genaddr (x y pre)
@@ -344,9 +344,9 @@
   (genaddr x y #x30))
 
 ; (x,y) : public key (as point on the elliptic curve)
-; return ftc address, base58 string
-; the first byte is #x0e for FTC
-(defun ftcaddr (x y)
-  (genaddr x y #x0e)
+; return uno address, base58 string
+; the first byte is #x0e for uno
+(defun unoaddr (x y)
+  (genaddr x y #x82)
   )
 

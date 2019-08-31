@@ -157,7 +157,7 @@
   (format t "LTC~%WIF ~d~%address ~d~%" (ltcwif (nth i privkeys)) (ltcaddr (car (nth i pubkeys)) (cadr (nth i pubkeys)))))
 
 (dotimes (i 5)
-  (format t "FTC~%WIF ~d~%address ~d~%" (ftcwif (nth i privkeys)) (ftcaddr (car (nth i pubkeys)) (cadr (nth i pubkeys)))))
+  (format t "UNO~%WIF ~d~%address ~d~%" (unowif (nth i privkeys)) (unoaddr (car (nth i pubkeys)) (cadr (nth i pubkeys)))))
 
 ; Tests for computing addresses and wif:
 
@@ -197,22 +197,22 @@
  "6vDVmjuFvNirxvnDwiXGAM2bk4yqPVJ61GgNAM37A3NyXfVpPGK")
 ))
 
-; Feathercoin addresses from http://www.featheraddress.org/
-(defvar ftc-addr-wif '(
-("6dxDgxTLsdmx2iGRxcUfERrmPp28B4Z76T"
- "5n7527uugM7sJ2Buxtdu3k5RHTnqX2NMpgsfSQ9f3ucsoimbtmF")
-("6r6u96hzDdKQXR6wENC3aXMSoYgV3xeXUz"
- "5mBrC2axYjQm6Ct8cA3eMk4ZpcPXGiazg15keogfWNKuLa6FTAv")
-("6wEtQJZFfsRDDT9U9ZBPeb9Y9hwmcYbiqf"
- "5m63vHMp4GnTHTXbaRLZyNub5dntMWXyMu6bcewZFBFL9FeMtP2")
-("6zRxw6Ttz1ApYSA2u349MXHepEesuUyuAt"
- "5nSJCZmNH1LUK7fWjhNDfHWvYm2YA6RhZcvaFiYhsYPJU1KEuuf")
-("6jwa9seK157dkPJu27qQ4Xnj8qTJbod3Bg"
- "5nfGAucs6yr9DqPbthCeQ8xByL4azxRJq8yaFGGvBzyK7hhB6bB")
-("6t886CtvQPy5nfYQ5PEmTUJU7G8tPWxvX9"
- "5nu7pk6UfqNF79dSP18nbUoPt6eU6zcA1nyfvv5ZeENR9VZRSdz")
-("6y8nQ4PEvfGHN1jLvfWt9HFMBxGCC93VYV"
- "5mhkifr5VxYetVXA6FgQonCzdJMJEUKFv4HJFjSYFjyMn1AgBnN")))
+; Unobtanium addresses
+(defvar uno-addr-wif '(
+("uQNwQ9x1aVYC7nktDjcXzPZbJDyVgy7VCW" 
+ "8XGmvSbyHAXPSNLvQUYxkLacRPUTKbX9JVXk3iHv2HeDSMBABYm")
+("uRmnrYpSe8zH8qGuE4PPfsxhBX8YN2QyCJ" 
+ "8XJFXHAR4KdPSEPzK5dYpMMS1wuDr3afYPgrZE7byTctTpn8mzs")
+("uM4YgQpEkQBcZr2tQd2686P9fqHfrC1thL" 
+ "8WrGhytJrtwx4ar7VkAMudfsGcbuiDwbJTYmsCXCF4r2wXCPGTB")
+("ubZWDTU5rQrwxApxyuq6zijb8CkEnQRj9f" 
+ "8WUNcL3VeLveTtgpHT3XFJc678tYctuBaaWQJMvbNbqx4AXxPYm")
+("uXpayw8EPv8pKRqvVk4XaxsBFBBFBezrzq" 
+ "8WU1yc1iZqsyNndW4ZKHyBXb2S3s6WV7Z7wAG9ukUgKSEoZkvAh")
+("uXjToegWm9BMn7J3bYoMHTNVP3fxvnCRR5" 
+ "8XoKE4MKm4maHPhLvUtxbXMBkkEGoAwcbx912ZiX3PBmAri7tfd")
+("uNwLMekA6Y5GJ9gEmQ6CGAcVxEwSJEPZEz" 
+ "8Y4dQYHTp34SF57cWyRYprC8tpxJ3HbTctiWsMXSRUMY1PeicA3")))
 
 (dolist (aw btc-addr-wif)
   (let ((k (privkeyfromwif (cadr aw))))
@@ -230,11 +230,11 @@
      (smulp k xg yg)
      (unless (equal (ltcaddr x y) (car aw)) (error "addr error ltc")))))
 
-(dolist (aw ftc-addr-wif)
+(dolist (aw uno-addr-wif)
   (let ((k (privkeyfromwif (cadr aw))))
-    (unless (equal (ftcwif k) (cadr aw)) (error "wif error ftc"))
+    (unless (equal (unowif k) (cadr aw)) (error "wif error uno"))
     (multiple-value-bind
      (x y)
      (smulp k xg yg)
-     (unless (equal (ftcaddr x y) (car aw)) (error "addr error ftc")))))
+     (unless (equal (unoaddr x y) (car aw)) (error "addr error uno")))))
 
