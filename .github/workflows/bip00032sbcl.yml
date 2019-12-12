@@ -10,8 +10,8 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: update
-      run: apt-get update
+      run: sudo apt-get update
     - name: sbcl install
-      run: apt-get install sbcl
+      run: sudo apt-get install sbcl
     - name: configure and build
       run: ./configure && sbcl --load make.lisp
